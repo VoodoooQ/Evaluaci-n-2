@@ -1,19 +1,17 @@
 package service;
 
 import model.Usuario;
-import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
-    private final List<Usuario> usuarios = new ArrayList<>();
+    private List<Usuario> usuarios = new ArrayList<>();
 
     @Override
-    public List<Usuario> getUsuarios() {
-        return new ArrayList<>(usuarios);
-    }
+    public List<Usuario> getUsuarios() { return usuarios; }
 
     @Override
     public Usuario saveUsuario(Usuario usuario) {
@@ -23,26 +21,57 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario getUsuario(String rut) {
-        return usuarios.stream()
-                .filter(u -> u.getRut().equals(rut))
-                .findFirst()
-                .orElse(null);
+        return usuarios.stream().filter(u -> u.getRut().equals(rut)).findFirst().orElse(null);
     }
 
     @Override
-    public Usuario updateUsuario(String rut, Usuario usuarioActualizado) {
-        for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getRut().equals(rut)) {
-                usuarios.set(i, usuarioActualizado);
-                return usuarioActualizado;
-            }
+    public Usuario updateUsuario(String rut, Usuario usuario) {
+        Usuario existente = getUsuario(rut);
+        if (existente != null) {
+            existente.setNombre(usuario.getNombre());
+            existente.setApellido(usuario.getApellido());
+            existente.setEdad(usuario.getEdad());
+            existente.setTipoUsuario(usuario.getTipoUsuario());
+            existente.setRol(usuario.getRol());
+            existente.setBloqueado(usuario.isBloqueado());
         }
-        return null;
+        return existente;
     }
 
     @Override
     public String deleteUsuario(String rut) {
-        boolean eliminado = usuarios.removeIf(u -> u.getRut().equals(rut));
-        return eliminado ? "Usuario eliminado" : "Usuario no encontrado";
+        Usuario usuario = getUsuario(rut);
+        if (usuario != null) {
+            usuarios.remove(usuario);
+            return "Usuario eliminado";
+        }
+        return "Usuario no encontrado";
+    }
+
+    @Override
+    public Usuario cambiarRol(String rut, String nuevoRol) {
+        Usuario usuario = getUsuario(rut);
+        if (usuario != null) {
+            usuario.setRol(nuevoRol);
+        }
+        return usuario;
+    }
+
+    @Override
+    public Usuario bloquearUsuario(String rut) {
+        Usuario usuario = getUsuario(rut);
+        if (usuario != null) {
+            usuario.setBloqueado(true);
+        }
+        return usuario;
+    }
+
+    @Override
+    public Usuario desbloquearUsuario(String rut) {
+        Usuario usuario = getUsuario(rut);
+        if (usuario != null) {
+            usuario.setBloqueado(false);
+        }
+        return usuario;
     }
 }

@@ -8,14 +8,15 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 public class Usuario {
 
-        String nombre;
-        String apellido;
-        String rut;
-        int edad;
-        String tipoUsuario;
+    private String nombre;
+    private String apellido;
+    private String rut;
+    private int edad;
+    private String tipoUsuario;
+    private String rol;         
+    private boolean bloqueado;  
 
-        public Usuario(String nombre,String apellido, String rut, int edad, String tipoUsuario) {
-        }
+    
 }
 
 
