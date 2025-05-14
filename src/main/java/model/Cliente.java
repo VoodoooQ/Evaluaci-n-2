@@ -9,7 +9,7 @@ import lombok.Setter;
 public class Cliente extends Usuario {
 
 
-    public Cliente(String nombre, String apellido, String rut, int edad, String tipoUsuario, String curso) {
+    public Cliente(String nombre, String apellido, int rut, int edad, String tipoUsuario, String curso) {
         super(nombre, apellido, rut, edad, tipoUsuario);
 
 

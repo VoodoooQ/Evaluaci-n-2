@@ -7,7 +7,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = true)
 public class Admin extends Usuario {
 
-     public Admin(String nombre, String apellido, String rut, int edad, String tipoUsuario) {
+     public Admin(String nombre, String apellido, int rut, int edad, String tipoUsuario) {
           super(nombre,apellido, rut, edad, tipoUsuario);
 
 
