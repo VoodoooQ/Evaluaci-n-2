@@ -1,4 +1,4 @@
-package model;
+package com.example.edutech.edutech.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,11 @@ public class Usuario {
 
         private String nombre;
         private String apellido;
-        private int rut;
+        private String rut;
         private int edad;
         private String tipoUsuario;
+        private String rol;
+        private boolean bloqueado;
 
 
 }
-
-
