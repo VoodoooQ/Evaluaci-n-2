@@ -48,30 +48,5 @@ public class UsuarioServiceImpl implements UsuarioService {
         return "Usuario no encontrado";
     }
 
-    @Override
-    public Usuario cambiarRol(String rut, String nuevoRol) {
-        Usuario usuario = getUsuario(rut);
-        if (usuario != null) {
-            usuario.setRol(nuevoRol);
-        }
-        return usuario;
-    }
 
-    @Override
-    public Usuario bloquearUsuario(String rut) {
-        Usuario usuario = getUsuario(rut);
-        if (usuario != null) {
-            usuario.setBloqueado(true);
-        }
-        return usuario;
-    }
-
-    @Override
-    public Usuario desbloquearUsuario(String rut) {
-        Usuario usuario = getUsuario(rut);
-        if (usuario != null) {
-            usuario.setBloqueado(false);
-        }
-        return usuario;
-    }
 }
