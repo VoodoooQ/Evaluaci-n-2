@@ -47,7 +47,7 @@ public class CursoServiceImpl implements CursoService {
     @Override
     public String deleteCurso(int id) {
         Curso curso = getCurso(id);
-        if (cursos != null) {
+        if (curso != null) {
             cursos.remove(curso);
             return "Curso eliminado";
         }

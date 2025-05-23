@@ -48,5 +48,4 @@ public class UsuarioServiceImpl implements UsuarioService {
         return "Usuario no encontrado";
     }
 
-
 }
