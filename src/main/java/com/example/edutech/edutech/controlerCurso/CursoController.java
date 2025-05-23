@@ -1,4 +1,4 @@
-package com.example.edutech.edutech.controller;
+package com.example.edutech.edutech.controlerCurso;
 
 import com.example.edutech.edutech.model.Curso;
 import com.example.edutech.edutech.service.CursoService;
