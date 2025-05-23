@@ -48,7 +48,7 @@ public class CursoServiceImpl implements CursoService {
     public String deleteCurso(int id) {
         Curso curso = getCurso(id);
         if (cursos != null) {
-            cursos.remove(cursos);
+            cursos.remove(curso);
             return "Curso eliminado";
         }
         return "Curso no encontrado";
