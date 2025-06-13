@@ -32,7 +32,6 @@ public class UsuarioServiceImpl implements UsuarioService {
             existente.setApellido(usuario.getApellido());
             existente.setEdad(usuario.getEdad());
             existente.setTipoUsuario(usuario.getTipoUsuario());
-            existente.setRol(usuario.getRol());
             existente.setBloqueado(usuario.isBloqueado());
         }
         return existente;
@@ -46,6 +45,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             return "Usuario eliminado";
         }
         return "Usuario no encontrado";
+
     }
 
 

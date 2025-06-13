@@ -35,7 +35,7 @@ public class CursoServiceImpl implements CursoService {
 
         if (existente != null) {
             existente.setId(curso.getId());
-            existente.setNombre(curso.getNombre());
+            existente.setNombrecurso(curso.getNombrecurso());
             existente.setDescripcion(curso.getDescripcion());
             existente.setCategoria(curso.getCategoria());
             existente.setFechaCreacion(curso.getFechaCreacion());
@@ -47,8 +47,8 @@ public class CursoServiceImpl implements CursoService {
     @Override
     public String deleteCurso(int id) {
         Curso curso = getCurso(id);
-        if (cursos != null) {
-            cursos.remove(cursos);
+        if (curso != null) {
+            cursos.remove(curso);
             return "Curso eliminado";
         }
         return "Curso no encontrado";
