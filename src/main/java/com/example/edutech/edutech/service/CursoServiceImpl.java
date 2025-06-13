@@ -40,7 +40,6 @@ public class CursoServiceImpl implements CursoService {
             existente.setCategoria(curso.getCategoria());
             existente.setFechaCreacion(curso.getFechaCreacion());
 
-            // Agrega aquí más campos si el modelo Curso los tiene
         }
         return existente;
     }
