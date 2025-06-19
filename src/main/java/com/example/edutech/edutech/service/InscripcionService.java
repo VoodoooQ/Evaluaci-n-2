@@ -1,35 +1,18 @@
 package com.example.edutech.edutech.service;
-
 import com.example.edutech.edutech.model.Inscripcion;
-import com.example.edutech.edutech.repository.InscripcionRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+public interface InscripcionService {
+    List<Inscripcion> getInscripciones();
+    Inscripcion getInscripcion(String estudiante);
 
-@Service
-public class InscripcionService {
+    List<Inscripcion> getInscripcion();
 
-    private final InscripcionRepository inscripcionRepository;
+    Inscripcion saveInscripcion(Inscripcion inscripcion);
+    Inscripcion updateInscripcion(Inscripcion inscripcion);
 
-    // ✅ Constructor explícito
-    public InscripcionService(InscripcionRepository inscripcionRepository) {
-        this.inscripcionRepository = inscripcionRepository;
-    }
+    Inscripcion updateInscripcion(String estudiante, Inscripcion inscripcion);
 
-    public List<Inscripcion> getAllInscripciones() {
-        return inscripcionRepository.findAll();
-    }
+    String deleteInscripcion(String rut);
 
-    public Optional<Inscripcion> getInscripcionById(Long id) {
-        return inscripcionRepository.findById(id);
-    }
-
-    public Inscripcion createInscripcion(Inscripcion inscripcion) {
-        return inscripcionRepository.save(inscripcion);
-    }
-
-    public void deleteInscripcion(Long id) {
-        inscripcionRepository.deleteById(id);
-    }
 }

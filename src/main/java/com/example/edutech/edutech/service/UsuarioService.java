@@ -10,4 +10,7 @@ public interface UsuarioService {
     Usuario getUsuario(String rut);
     Usuario updateUsuario(String rut, Usuario usuario);
     String deleteUsuario(String rut);
+
+
+
 }
