@@ -1,4 +1,5 @@
 package com.example.edutech.edutech.service;
+
 import com.example.edutech.edutech.model.Curso;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,27 +23,21 @@ public class CursoServiceImpl implements CursoService {
 
     @Override
     public Curso getCurso(int id) {
-        if (id >= 0 && id < cursos.size()) {
-            return cursos.get(id);
-        } else {
-            return null;
-        }
+        return cursos.stream().filter(c -> c.getId() == id).findFirst().orElse(null);
     }
 
     @Override
     public Curso updateCurso(int id, Curso curso) {
         Curso existente = getCurso(id);
-
         if (existente != null) {
-            existente.setId(curso.getId());
-            existente.setNombrecurso(curso.getNombrecurso());
+            existente.setNombre(curso.getNombre());
             existente.setDescripcion(curso.getDescripcion());
             existente.setCategoria(curso.getCategoria());
             existente.setFechaCreacion(curso.getFechaCreacion());
-
         }
         return existente;
     }
+
     @Override
     public String deleteCurso(int id) {
         Curso curso = getCurso(id);
