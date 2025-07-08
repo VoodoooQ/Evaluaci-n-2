@@ -18,11 +18,39 @@ public class InscripcionServiceTest {
 
     @Test
     public void EliminarInscripcionTest() {
-        // Aquí puedes implementar el test para eliminar una inscripción
+        // Crear una inscripción para eliminar
+        Inscripcion inscripcion = new Inscripcion("Felipe", "Matematicas", "2025-07-08");
+        InscripcionServiceImpl inscripcionService = new InscripcionServiceImpl();
+        
+        // Guardar la inscripción
+        inscripcionService.saveInscripcion(inscripcion);
+        
+        // Eliminar la inscripción por estudiante (no por ID)
+        String resultado = inscripcionService.deleteInscripcion("Felipe");
+        
+        // Verificar que se eliminó correctamente
+        Assertions.assertEquals("Inscripcion eliminada", resultado);
+        
+        // Verificar que ya no existe
+        Inscripcion inscripcionEliminada = inscripcionService.getInscripcion("Felipe");
+        Assertions.assertNull(inscripcionEliminada);
     }
 
     @Test
     public void BuscarInscripcionTest() {
-        // Aquí puedes implementar el test para buscar una inscripción
+        // Crear y guardar una inscripción
+        Inscripcion esperado = new Inscripcion("Ana", "Fisica", "2025-07-08");
+        InscripcionServiceImpl inscripcionService = new InscripcionServiceImpl();
+        
+        inscripcionService.saveInscripcion(esperado);
+        
+        // Buscar la inscripción por estudiante (no por ID)
+        Inscripcion resultado = inscripcionService.getInscripcion("Ana");
+        
+        // Verificar que se encontró correctamente
+        Assertions.assertNotNull(resultado);
+        Assertions.assertEquals(esperado.getEstudiante(), resultado.getEstudiante());
+        Assertions.assertEquals(esperado.getCurso(), resultado.getCurso());
+        Assertions.assertEquals(esperado.getFechaInscripcion(), resultado.getFechaInscripcion());
     }
 }
