@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,8 +43,10 @@ public class UsuarioController {
                     .actualizarUsuario(usuario.getRut(), usuario)).withRel("update"))
                 .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
                     .eliminarUsuario(usuario.getRut())).withRel("delete"))
-                .add(WebMvcLinkBuilder.linkTo(CursoController.class).withRel("cursos"))
-                .add(WebMvcLinkBuilder.linkTo(InscripcionController.class).withRel("inscripciones")))
+                .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
+                    .listarCursos()).withRel("cursos"))
+                .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InscripcionController.class)
+                    .listarInscripciones()).withRel("inscripciones")))
             .collect(Collectors.toList());
 
         return CollectionModel.of(usuarios)
@@ -54,6 +57,7 @@ public class UsuarioController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Agrega un usuario al sistema",
                description = "Crea un nuevo usuario y devuelve el usuario creado con enlaces HATEOAS")
     @ApiResponses(value = {
@@ -72,8 +76,10 @@ public class UsuarioController {
                 .actualizarUsuario(nuevoUsuario.getRut(), nuevoUsuario)).withRel("update"))
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
                 .eliminarUsuario(nuevoUsuario.getRut())).withRel("delete"))
-            .add(WebMvcLinkBuilder.linkTo(CursoController.class).withRel("cursos"))
-            .add(WebMvcLinkBuilder.linkTo(InscripcionController.class).withRel("inscripciones"));
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
+                .listarCursos()).withRel("cursos"))
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InscripcionController.class)
+                .listarInscripciones()).withRel("inscripciones"));
     }
 
     @GetMapping("{rut}")
@@ -86,6 +92,10 @@ public class UsuarioController {
     public EntityModel<Usuario> buscarUsuario(@PathVariable String rut) {
         Usuario usuario = usuarioService.getUsuario(rut);
         
+        if (usuario == null) {
+            throw new RuntimeException("Usuario no encontrado con RUT: " + rut);
+        }
+        
         return EntityModel.of(usuario)
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
                 .buscarUsuario(rut)).withSelfRel())
@@ -95,8 +105,10 @@ public class UsuarioController {
                 .actualizarUsuario(rut, usuario)).withRel("update"))
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
                 .eliminarUsuario(rut)).withRel("delete"))
-            .add(WebMvcLinkBuilder.linkTo(CursoController.class).withRel("cursos"))
-            .add(WebMvcLinkBuilder.linkTo(InscripcionController.class).withRel("inscripciones"));
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
+                .listarCursos()).withRel("cursos"))
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InscripcionController.class)
+                .listarInscripciones()).withRel("inscripciones"));
     }
 
     @PutMapping("{rut}")
@@ -109,6 +121,11 @@ public class UsuarioController {
     public EntityModel<Usuario> actualizarUsuario(@PathVariable String rut, @RequestBody Usuario usuario) {
         Usuario usuarioActualizado = usuarioService.updateUsuario(rut, usuario);
         
+        // Validación 
+        if (usuarioActualizado == null) {
+            throw new RuntimeException("No se pudo actualizar. Usuario no encontrado con RUT: " + rut);
+        }
+        
         return EntityModel.of(usuarioActualizado)
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
                 .buscarUsuario(rut)).withSelfRel())
@@ -116,8 +133,12 @@ public class UsuarioController {
                 .listarUsuarios()).withRel("all-usuarios"))
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
                 .eliminarUsuario(rut)).withRel("delete"))
-            .add(WebMvcLinkBuilder.linkTo(CursoController.class).withRel("cursos"))
-            .add(WebMvcLinkBuilder.linkTo(InscripcionController.class).withRel("inscripciones"));
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
+                .agregarUsuario(null)).withRel("create"))  // ← ESTA LÍNEA ES LA QUE FALTA
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
+                .listarCursos()).withRel("cursos"))
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InscripcionController.class)
+                .listarInscripciones()).withRel("inscripciones"));
     }
 
     @DeleteMapping("{rut}")
@@ -135,7 +156,9 @@ public class UsuarioController {
                 .listarUsuarios()).withRel("all-usuarios"))
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
                 .agregarUsuario(null)).withRel("create"))
-            .add(WebMvcLinkBuilder.linkTo(CursoController.class).withRel("cursos"))
-            .add(WebMvcLinkBuilder.linkTo(InscripcionController.class).withRel("inscripciones"));
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
+                .listarCursos()).withRel("cursos"))
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InscripcionController.class)
+                .listarInscripciones()).withRel("inscripciones"));
     }
 }

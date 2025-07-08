@@ -13,6 +13,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @Tag(name= "Cursos", description = "operaciones relacionadas con los cursos del sistema")
@@ -42,8 +43,10 @@ public class CursoController {
                     .actualizarCurso(curso.getId(), curso)).withRel("update"))
                 .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
                     .eliminarCurso(curso.getId())).withRel("delete"))
-                .add(WebMvcLinkBuilder.linkTo(UsuarioController.class).withRel("usuarios"))
-                .add(WebMvcLinkBuilder.linkTo(InscripcionController.class).withRel("inscripciones")))
+                .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
+                    .listarUsuarios()).withRel("usuarios"))
+                .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InscripcionController.class)
+                    .listarInscripciones()).withRel("inscripciones")))
             .collect(Collectors.toList());
 
         return CollectionModel.of(cursos)
@@ -54,6 +57,7 @@ public class CursoController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Registra un curso en el sistema",
                description = "Crea un nuevo curso y devuelve el curso creado con enlaces HATEOAS")
     @ApiResponses(value = {
@@ -72,8 +76,10 @@ public class CursoController {
                 .actualizarCurso(nuevoCurso.getId(), nuevoCurso)).withRel("update"))
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
                 .eliminarCurso(nuevoCurso.getId())).withRel("delete"))
-            .add(WebMvcLinkBuilder.linkTo(UsuarioController.class).withRel("usuarios"))
-            .add(WebMvcLinkBuilder.linkTo(InscripcionController.class).withRel("inscripciones"));
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
+                .listarUsuarios()).withRel("usuarios"))
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InscripcionController.class)
+                .listarInscripciones()).withRel("inscripciones"));
     }
 
     @GetMapping("{id}")
@@ -86,6 +92,10 @@ public class CursoController {
     public EntityModel<Curso> buscarCurso(@PathVariable int id) {
         Curso curso = cursoService.getCurso(id);
         
+        if (curso == null) {
+            throw new RuntimeException("Curso no encontrado con ID: " + id);
+        }
+        
         return EntityModel.of(curso)
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
                 .buscarCurso(id)).withSelfRel())
@@ -95,8 +105,10 @@ public class CursoController {
                 .actualizarCurso(id, curso)).withRel("update"))
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
                 .eliminarCurso(id)).withRel("delete"))
-            .add(WebMvcLinkBuilder.linkTo(UsuarioController.class).withRel("usuarios"))
-            .add(WebMvcLinkBuilder.linkTo(InscripcionController.class).withRel("inscripciones"));
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
+                .listarUsuarios()).withRel("usuarios"))
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InscripcionController.class)
+                .listarInscripciones()).withRel("inscripciones"));
     }
 
     @PutMapping("{id}")
@@ -109,6 +121,11 @@ public class CursoController {
     public EntityModel<Curso> actualizarCurso(@PathVariable int id, @RequestBody Curso curso) {
         Curso cursoActualizado = cursoService.updateCurso(id, curso);
         
+        // VALIDACIÓN
+        if (cursoActualizado == null) {
+            throw new RuntimeException("No se pudo actualizar. Curso no encontrado con ID: " + id);
+        }
+        
         return EntityModel.of(cursoActualizado)
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
                 .buscarCurso(id)).withSelfRel())
@@ -118,8 +135,10 @@ public class CursoController {
                 .eliminarCurso(id)).withRel("delete"))
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
                 .agregarCurso(null)).withRel("create"))
-            .add(WebMvcLinkBuilder.linkTo(UsuarioController.class).withRel("usuarios"))
-            .add(WebMvcLinkBuilder.linkTo(InscripcionController.class).withRel("inscripciones"));
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
+                .listarUsuarios()).withRel("usuarios"))
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InscripcionController.class)
+                .listarInscripciones()).withRel("inscripciones"));
     }
 
     @DeleteMapping("{id}")
@@ -137,7 +156,9 @@ public class CursoController {
                 .listarCursos()).withRel("all-cursos"))
             .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CursoController.class)
                 .agregarCurso(null)).withRel("create"))
-            .add(WebMvcLinkBuilder.linkTo(UsuarioController.class).withRel("usuarios"))
-            .add(WebMvcLinkBuilder.linkTo(InscripcionController.class).withRel("inscripciones"));
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class)
+                .listarUsuarios()).withRel("usuarios"))
+            .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(InscripcionController.class)
+                .listarInscripciones()).withRel("inscripciones"));
     }
 }
