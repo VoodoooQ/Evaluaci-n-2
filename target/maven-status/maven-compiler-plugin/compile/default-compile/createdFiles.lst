@@ -1,0 +1,17 @@
+com\example\edutech\edutech\EduTechApplication.class
+com\example\edutech\edutech\repository\UsuarioRepository.class
+com\example\edutech\edutech\service\InscripcionService.class
+com\example\edutech\edutech\service\CursoService.class
+com\example\edutech\edutech\config\DataLoader.class
+com\example\edutech\edutech\service\InscripcionServiceImpl.class
+com\example\edutech\edutech\config\SwaggerController.class
+com\example\edutech\edutech\service\UsuarioService.class
+com\example\edutech\edutech\model\Inscripcion.class
+com\example\edutech\edutech\service\CursoServiceImpl.class
+com\example\edutech\edutech\service\UsuarioServiceImpl.class
+com\example\edutech\edutech\controller\InscripcionController.class
+com\example\edutech\edutech\model\Usuario.class
+com\example\edutech\edutech\repository\JpaRepositorytory.class
+com\example\edutech\edutech\model\Curso.class
+com\example\edutech\edutech\controller\CursoController.class
+com\example\edutech\edutech\controller\UsuarioController.class
