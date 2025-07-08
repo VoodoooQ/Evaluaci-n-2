@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public abstract class InscripcionServiceImpl implements InscripcionService {
+public class InscripcionServiceImpl implements InscripcionService {
    private List<Inscripcion> inscripciones = new ArrayList<>();
 
     @Override
@@ -28,9 +28,9 @@ public abstract class InscripcionServiceImpl implements InscripcionService {
     public Inscripcion updateInscripcion(String estudiante, Inscripcion inscripcion){
         Inscripcion existente = getInscripcion(estudiante);
         if(existente != null) {
-            existente.setEstudiante(existente.getEstudiante());
-            existente.setCurso(existente.getCurso());
-            existente.setFechaInscripcion(existente.getFechaInscripcion());
+            existente.setEstudiante(inscripcion.getEstudiante());
+            existente.setCurso(inscripcion.getCurso());
+            existente.setFechaInscripcion(inscripcion.getFechaInscripcion());
         }
         return  existente;
     }
@@ -42,6 +42,23 @@ public abstract class InscripcionServiceImpl implements InscripcionService {
             return "Inscripcion eliminada";
         }
         return "Inscripcion no encontrada";
+    }
+
+    @Override
+    public List<Inscripcion> getInscripciones() {
+        // Devuelve todas las inscripciones
+        return inscripciones;
+    }
+
+    @Override
+    public Inscripcion updateInscripcion(Inscripcion inscripcion) {
+        // Busca la inscripción por estudiante y actualiza si existe
+        Inscripcion existente = getInscripcion(inscripcion.getEstudiante());
+        if (existente != null) {
+            existente.setCurso(inscripcion.getCurso());
+            existente.setFechaInscripcion(inscripcion.getFechaInscripcion());
+        }
+        return existente;
     }
 
 
